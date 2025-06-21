@@ -1,16 +1,19 @@
 package com.parqueaventuras.magicworld.tfg_angular_springboot.auth;
 
 import com.parqueaventuras.magicworld.tfg_angular_springboot.configuration.jwt.JwtService;
-import com.parqueaventuras.magicworld.tfg_angular_springboot.exceptions.EmailAlreadyExistsException;
-import com.parqueaventuras.magicworld.tfg_angular_springboot.exceptions.PasswordsDoNoMatchException;
-import com.parqueaventuras.magicworld.tfg_angular_springboot.exceptions.UsernameAlreadyExistsException;
+import com.parqueaventuras.magicworld.tfg_angular_springboot.exceptions.*;
 import com.parqueaventuras.magicworld.tfg_angular_springboot.user.Role;
 import com.parqueaventuras.magicworld.tfg_angular_springboot.user.User;
 import com.parqueaventuras.magicworld.tfg_angular_springboot.user.UserRepository;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validator;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.Set;
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -18,12 +21,13 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final Validator validator;
 
     public AuthResponse login(LoginRequest request) {
         User user = userRepository.findByUsername(request.getUsername())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + request.getUsername()));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with username: " + request.getUsername()));
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new IllegalArgumentException("Invalid credentials");
+            throw new InvalidCredentialsException("Invalid credentials");
         }
 
         String token = jwtService.getToken(user);
@@ -43,17 +47,22 @@ public class AuthService {
             throw new PasswordsDoNoMatchException("Passwords do not match");
         }
 
-        String encodedPassword = passwordEncoder.encode(request.getPassword());
-
         User user = User.builder()
                 .username(request.getUsername())
                 .firstname(request.getFirstname())
                 .lastname(request.getLastname())
                 .email(request.getEmail())
-                .password(encodedPassword)
+                .password(request.getPassword())
                 .role(Role.USER)
                 .build();
+
+        Set<ConstraintViolation<User>> violations = validator.validate(user);
+        if (!violations.isEmpty()) {
+            throw new ConstraintViolationException(violations);
+        }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
+
         return AuthResponse.builder()
                 .token(jwtService.getToken(user))
                 .build();

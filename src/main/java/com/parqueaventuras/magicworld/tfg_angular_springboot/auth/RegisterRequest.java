@@ -14,25 +14,27 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RegisterRequest {
 
-    @NotBlank
+    @NotBlank(message = "Username is required")
     private String username;
 
-    @NotBlank()
+    @NotBlank(message = "First name is required")
     private String firstname;
 
-    @NotBlank()
+    @NotBlank(message = "Last name is required")
     private String lastname;
 
-    @NotBlank
+    @NotBlank(message = "Email is required")
     private String email;
 
-    @NotBlank
+    @Pattern(
+            regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
+            message = "Password must contain at least one uppercase letter, one lowercase letter, one number, one special character, and be at least 8 characters long."
+    )
+    @NotBlank(message = "Password is required")
     private String password;
 
-    @NotBlank
+    @NotBlank(message = "Confirm password is required")
     private String confirmPassword;
 
-    @NotBlank
-    private String authority;
 
 }

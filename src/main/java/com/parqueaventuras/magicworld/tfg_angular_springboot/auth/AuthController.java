@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,22 +24,26 @@ public class AuthController {
     @Operation(summary = "User login", description = "Authenticate user and return JWT token", tags = {"Authentication"})
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Login successful", content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "400", description = "Invalid login data", content = @Content),
             @ApiResponse(responseCode = "401", description = "Invalid credentials", content = @Content),
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content)
     })
     @PostMapping(value = "/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
         return ResponseEntity.ok(authService.login(request));
     }
     @Operation(summary = "User registration", description = "Register a new user", tags = {"Authentication"})
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Registration successful", content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "201", description = "Registration successful", content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "400", description = "Invalid registration data", content = @Content),
+            @ApiResponse(responseCode = "409", description = "Username or email already exists", content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content)
     })
 
     @PostMapping(value = "/register")
-    public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest request) {
-        return ResponseEntity.ok(authService.register(request));
+    public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest request) {
+        AuthResponse response = authService.register(request);
+        return ResponseEntity.status(201).body(response);
     }
 }

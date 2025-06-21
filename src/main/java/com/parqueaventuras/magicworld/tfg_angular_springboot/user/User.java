@@ -29,13 +29,13 @@ public class User extends BaseEntity implements UserDetails {
 
     @NotBlank(message = "Firstname cannot be blank")
     @Size(min = 1, max = 50, message = "Firstname must be between 1 and 50 characters")
-    @Pattern(regexp = "^[A-Za-zÁÉÍÓÚáéíóúÑñ\\s'-]+$", message = "Firstname must contain only letters and valid characters")
+    @Pattern(regexp = "^[\\p{L}\\s'-]+$", message = "Firstname must contain only letters and valid characters")
     @Column(nullable = false)
     private String firstname;
 
     @NotBlank(message = "Lastname cannot be blank")
     @Size(min = 1, max = 50, message = "Lastname must be between 1 and 50 characters")
-    @Pattern(regexp = "^[A-Za-zÁÉÍÓÚáéíóúÑñ\\s'-]+$", message = "Lastname must contain only letters and valid characters")
+    @Pattern(regexp = "^[\\p{L}\\s'-]+$", message = "Lastname must contain only letters and valid characters")
     @Column(nullable = false)
     private String lastname;
 
@@ -43,10 +43,7 @@ public class User extends BaseEntity implements UserDetails {
     @Column(unique = true, nullable = false)
     private String email;
 
-    @Pattern(
-            regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
-            message = "Password must contain at least one uppercase letter, one lowercase letter, one number, one special character, and be at least 8 characters long."
-    )
+
     @NotBlank(message = "Password cannot be blank")
     @Size(min = 8, max = 100, message = "Password must be between 8 and 100 characters")
     private String password;
