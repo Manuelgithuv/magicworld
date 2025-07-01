@@ -1,0 +1,13 @@
+package com.magicworld.tfg_angular_springboot;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class MagicWorldApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(MagicWorldApplication.class, args);
+	}
+
+}

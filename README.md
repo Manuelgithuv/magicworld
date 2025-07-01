@@ -15,14 +15,14 @@ Tecnologías principales: **Angular** (frontend) y **Spring Boot** (backend, Jav
 1. Clona el repositorio: `git clone https://github.com/Manuelgithuv/TFG-parqueaventura.git`
 2. Configura la base de datos MySQL y añade las credenciales como variables de entorno en `src/main/resources/application.properties`.  
    Asegúrate de que la base de datos existe y las credenciales son correctas.
-3. Instala las dependencias del backend: `mvn clean install -DDB_USER=username -DDB_PASS=password`
+3. Instala las dependencias del backend: `mvn clean install`
 
 ## Ejecución de scripts SQL de migración
 
 Para ejecutar los scripts SQL de migración, usa el siguiente comando:
 
 ```powershell
-mvn clean sql:execute -DDB_USER=username -DDB_PASS=password
+mvn clean sql:execute
 ```
 ## Ejecución del backend: mvn spring-boot:run
 
