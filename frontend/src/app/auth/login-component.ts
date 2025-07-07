@@ -13,21 +13,39 @@ import { ErrorService } from '../error/error-service';
   template: `
     <div class="login-background">
       <form class="auth-form" (ngSubmit)="onLogin()">
+        @if (errorMessages.length > 0) {
+          <div class="error">
+            @for (msg of errorMessages; track $index) {
+              {{ msg }}<br />
+            }
+          </div>
+        }
+        @else if (errorCode) {
+          <div class="error">{{ errorCode | translate:errorArgs }}</div>
+        }
         <h2>{{ 'LOGIN.TITLE' | translate }}</h2>
         <label for="username">{{ 'LOGIN.USERNAME' | translate }}</label>
         <input id="username" [(ngModel)]="username" name="username" required />
 
         <label for="password">{{ 'LOGIN.PASSWORD' | translate }}</label>
-        <input id="password" [(ngModel)]="password" name="password" type="password" required />
-
-        @if (errorMessages.length > 0) {
-          @for (msg of errorMessages; track $index) {
-            <div class="error">{{ msg }}</div>
-          }
-        }
-        @else if (errorCode) {
-          <div class="error">{{ errorCode | translate:errorArgs }}</div>
-        }
+        <div class="password-container">
+          <input
+            id="password"
+            [(ngModel)]="password"
+            name="password"
+            [type]="showPassword ? 'text' : 'password'"
+            required
+          />
+          <button
+            type="button"
+            class="toggle-password"
+            (click)="togglePasswordVisibility()"
+            tabindex="-1"
+            aria-label="Mostrar/Ocultar contraseña"
+          >
+            {{ showPassword ? '👁️' : '🙈' }}
+          </button>
+        </div>
 
         <button type="submit">{{ 'LOGIN.BUTTON' | translate }}</button>
       </form>
@@ -41,6 +59,11 @@ export class LoginComponent {
   errorCode: string|null = null;
   errorArgs: any = {};
   errorMessages: string[] = [];
+  showPassword = false;
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
 
   constructor(
     private auth: AuthService,

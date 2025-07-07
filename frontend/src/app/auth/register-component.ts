@@ -10,6 +10,16 @@ import { ErrorService } from '../error/error-service';
   template: `
     <div class="register-background">
       <form class="auth-form" (ngSubmit)="onRegister()">
+        @if (errorMessages.length > 0) {
+          <div class="error">
+            @for (msg of errorMessages; track $index) {
+              {{ msg }}<br />
+            }
+          </div>
+        }
+        @else if (errorCode) {
+          <div class="error">{{ errorCode | translate:errorArgs }}</div>
+        }
         <h2>{{ 'REGISTER.TITLE' | translate }}</h2>
         <label for="username">{{ 'REGISTER.USERNAME' | translate }}</label>
         <input id="username" [(ngModel)]="username" name="username" required/>
@@ -24,19 +34,44 @@ import { ErrorService } from '../error/error-service';
         <input id="email" [(ngModel)]="email" name="email" required/>
 
         <label for="password">{{ 'REGISTER.PASSWORD' | translate }}</label>
-        <input id="password" [(ngModel)]="password" name="password" type="password" required/>
+        <div class="password-container">
+          <input
+            id="password"
+            [(ngModel)]="password"
+            name="password"
+            [type]="showPassword ? 'text' : 'password'"
+            required
+          />
+          <button
+            type="button"
+            class="toggle-password"
+            (click)="togglePasswordVisibility()"
+            tabindex="-1"
+            aria-label="Mostrar/Ocultar contraseña"
+          >
+            {{ showPassword ? '👁️' : '🙈' }}
+          </button>
+        </div>
 
         <label for="confirmPassword">{{ 'REGISTER.CONFIRM' | translate }}</label>
-        <input id="confirmPassword" [(ngModel)]="confirmPassword" name="confirmPassword" type="password" required/>
-
-        @if (errorMessages.length) {
-          @for (msg of errorMessages; track $index) {
-            <div class="error">{{ msg }}</div>
-          }
-        }
-        @if (errorCode && !errorMessages.length) {
-          <div class="error">{{ errorCode | translate:errorArgs }}</div>
-        }
+        <div class="password-container">
+          <input
+            id="confirmPassword"
+            [(ngModel)]="confirmPassword"
+            name="confirmPassword"
+            [type]="showConfirmPassword ? 'text' : 'password'"
+            required
+          />
+          <button
+            type="button"
+            class="toggle-password"
+            (click)="toggleConfirmPasswordVisibility()"
+            tabindex="-1"
+            aria-label="Mostrar/Ocultar confirmación"
+          >
+            {{ showConfirmPassword ? '👁️' : '🙈' }}
+          </button>
+        </div>
         <button type="submit">{{ 'REGISTER.BUTTON' | translate }}</button>
       </form>
     </div>
@@ -53,12 +88,22 @@ export class RegisterComponent {
   errorCode: string | null = null;
   errorArgs: any = {};
   errorMessages: string[] = [];
+  showPassword = false;
+  showConfirmPassword = false;
 
   constructor(
     private errorService: ErrorService,
     private auth: AuthService,
     private translate: TranslateService
   ) {}
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
+  toggleConfirmPasswordVisibility() {
+    this.showConfirmPassword = !this.showConfirmPassword;
+  }
 
   onRegister() {
     this.auth.register({
