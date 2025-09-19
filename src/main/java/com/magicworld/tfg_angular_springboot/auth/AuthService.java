@@ -6,6 +6,7 @@ import com.magicworld.tfg_angular_springboot.user.Role;
 import com.magicworld.tfg_angular_springboot.user.User;
 import com.magicworld.tfg_angular_springboot.user.UserDTO;
 import com.magicworld.tfg_angular_springboot.user.UserRepository;
+import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
@@ -24,6 +25,7 @@ public class AuthService {
     private final JwtService jwtService;
     private final Validator validator;
 
+    @Transactional
     public AuthResponse login(LoginRequest request) {
         User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new ResourceNotFoundException(request.getUsername()));
@@ -38,6 +40,7 @@ public class AuthService {
                 .build();
     }
 
+    @Transactional
     public AuthResponse register(RegisterRequest request) {
         if (userRepository.existsByUsername(request.getUsername())) {
             throw new UsernameAlreadyExistsException(request.getUsername());

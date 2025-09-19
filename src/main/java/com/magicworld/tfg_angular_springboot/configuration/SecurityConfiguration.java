@@ -33,13 +33,13 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                         .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler())
-                        .ignoringRequestMatchers("/api/v1/auth/login", "/api/v1/auth/register")
+                        .ignoringRequestMatchers("/api/v1/auth/login", "/api/v1/auth/register","/api/v1/auth/reset-password","/api/v1/auth/forgot-password")
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .exceptionHandling((exceptionHandling) -> exceptionHandling.authenticationEntryPoint(unauthorizedHandler))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/static/**", "/v3/api-docs/**", "/swagger-resources/**", "/api/v1/auth/login","/api/v1/auth/register", "/swagger-ui.html", "/swagger-ui/**").permitAll()
+                        .requestMatchers("/static/**", "/v3/api-docs/**", "/swagger-resources/**", "/api/v1/auth/login","/api/v1/auth/register","/api/v1/auth/reset-password","/api/v1/auth/forgot-password", "/swagger-ui.html", "/swagger-ui/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

@@ -3,10 +3,11 @@
     "TITLE": "Iniciar sesión",
     "USERNAME": "Usuario",
     "PASSWORD": "Contraseña",
-    "BUTTON": "Entrar"
+    "BUTTON": "Entrar",
+    "FORGOT_PASSWORD": "¿Has olvidado tu contraseña?"
   },
   "REGISTER": {
-    "TITLE": "Registro",
+    "TITLE": "Registrarse",
     "USERNAME": "Usuario",
     "FIRSTNAME": "Nombre",
     "LASTNAME": "Apellido",
@@ -23,7 +24,7 @@
     "TICKETS": "Entradas",
     "HOTEL_PACK": "Hotel + Entradas",
     "SCHOOL_GROUPS": "Grupos escolares",
-    "ADMIN_PANEL": "Endpoints de la app"
+    "ADMIN_PANEL": "Panel de administración"
   },
   "HOME": {
     "TITLE": "Bienvenido a MagicWorld",
@@ -37,10 +38,10 @@
     "FEATURE2": {
       "ALT": "Espectáculos mágicos",
       "TITLE": "Espectáculos mágicos",
-      "DESC": "Shows en vivo que te dejarán sin aliento, todos los días."
+      "DESC": "Espectáculos en vivo que te dejarán sin aliento, cada día."
     },
     "FEATURE3": {
-      "ALT": "Hospedaje mágico",
+      "ALT": "Alojamiento mágico",
       "TITLE": "Hotel temático",
       "DESC": "Alójate en el corazón del parque con todas las comodidades."
     }
@@ -49,8 +50,8 @@
   "error.invalid.credentials": "Credenciales inválidas",
   "error.password.do.not.match": "Las contraseñas no coinciden",
   "error.username.already.exists": "El usuario ya está registrado: {{0}}",
-  "error.email.already.exists": "El correo ya está registrado: {{0}}",
-  "error.validation": "Error de validación: {{0}}",
+  "error.email.already.exists": "El correo electrónico ya está registrado: {{0}}",
+  "error.validation": "Error de validación:",
   "error.internal": "Ha ocurrido un error interno",
   "error.unexpected": "Error inesperado",
   "validation.username.required": "El usuario es obligatorio",
@@ -65,6 +66,31 @@
   "validation.email.invalid": "El correo electrónico debe ser válido",
   "validation.password.required": "La contraseña es obligatoria",
   "validation.password.size": "La contraseña debe tener entre 8 y 100 caracteres",
-  "validation.password.pattern": "La contraseña debe tener al menos una mayúscula, una minúscula, un número, un carácter especial y mínimo 8 caracteres",
-  "validation.confirmPassword.required": "La confirmación de la contraseña es obligatoria"
+  "validation.password.pattern": "La contraseña debe contener al menos una mayúscula, una minúscula, un número, un carácter especial y tener al menos 8 caracteres.",
+  "validation.confirmPassword.required": "Confirmar contraseña es obligatorio",
+  "error.password.pattern": "La contraseña debe contener al menos una mayúscula, una minúscula, un número, un carácter especial y tener al menos 8 caracteres.",
+  "error.invalid.token": "El token es inválido o ha expirado",
+  "passwordReset": {
+    "title": "¿Has olvidado tu contraseña?",
+    "emailLabel": "Correo electrónico",
+    "emailRequired": "El correo electrónico es obligatorio.",
+    "emailInvalid": "Introduce un correo electrónico válido.",
+    "sendButton": "Enviar correo de recuperación",
+    "success": "Si el correo existe, se ha enviado un enlace de recuperación."
+  },
+  "resetPassword": {
+    "title": "Restablecer contraseña",
+    "newPassword": "Nueva contraseña",
+    "confirmPassword": "Confirmar contraseña",
+    "submit": "Cambiar contraseña",
+    "success": "Tu contraseña ha sido cambiada con éxito."
+  },
+  "validation": {
+    "password": {
+      "required": "La contraseña es obligatoria.",
+      "size": "La contraseña debe tener al menos {{min}} caracteres.",
+      "mismatch": "Las contraseñas no coinciden.",
+      "pattern": "La contraseña debe contener al menos una mayúscula, una minúscula, un número y un carácter especial."
+    }
+  }
 }

@@ -1,0 +1,35 @@
+<div class="page-background">
+  <form class="email-form" [formGroup]="emailForm" (ngSubmit)="onSubmit()">
+    <h2 class="form-title">{{ 'passwordReset.title' | translate }}</h2>
+
+    <label class="form-label" for="email">{{ 'passwordReset.emailLabel' | translate }}</label>
+    <input class="form-input" id="email" type="email" formControlName="email" />
+
+    @if (submitted && email?.invalid) {
+      <div class="form-error">
+        @if (email?.errors?.['required']) {
+          <div>{{ 'passwordReset.emailRequired' | translate }}</div>
+        }
+        @if (email?.errors?.['email']) {
+          <div>{{ 'passwordReset.emailInvalid' | translate }}</div>
+        }
+      </div>
+    }
+
+    <button class="form-button" type="submit">{{ 'passwordReset.sendButton' | translate }}</button>
+
+    @if (successMessage) {
+      <div class="form-success">{{ successMessage | translate }}</div>
+    }
+    @if (errorMessages.length > 0) {
+      <div class="form-error">
+        @for (msg of errorMessages; track $index) {
+          {{ msg }}<br />
+        }
+      </div>
+    }
+    @else if (errorCode) {
+      <div class="form-error">{{ errorCode | translate:errorArgs }}</div>
+    }
+  </form>
+</div>

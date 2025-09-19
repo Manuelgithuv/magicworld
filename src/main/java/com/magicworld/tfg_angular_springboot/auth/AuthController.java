@@ -26,6 +26,7 @@ public class AuthController {
 
     private final AuthService authService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final PasswordResetService passwordResetService;
 
     @Operation(summary = "User login", description = "Authenticate user and return JWT token", tags = {"Authentication"})
     @ApiResponses({
@@ -104,6 +105,19 @@ public class AuthController {
         CsrfTokenRepository repo = CookieCsrfTokenRepository.withHttpOnlyFalse();
         CsrfToken token = repo.generateToken(request);
         repo.saveToken(token, request, response);
+        return ResponseEntity.ok().build();
+    }
+
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@RequestBody String email) {
+        passwordResetService.createPasswordResetToken(email);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequest request) {
+        passwordResetService.resetPassword(request.getToken(), request.getNewPassword());
         return ResponseEntity.ok().build();
     }
 
