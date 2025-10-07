@@ -1,8 +1,10 @@
 package com.magicworld.tfg_angular_springboot.configuration;
 
+import com.magicworld.tfg_angular_springboot.auth.RateLimitFilter;
 import com.magicworld.tfg_angular_springboot.configuration.jwt.AuthEntryPointJwt;
 import com.magicworld.tfg_angular_springboot.configuration.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -44,6 +46,15 @@ public class SecurityConfiguration {
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
+    }
+
+    @Bean
+    public FilterRegistrationBean<RateLimitFilter> rateLimitFilterRegistration(RateLimitFilter rateLimitFilter) {
+        FilterRegistrationBean<RateLimitFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(rateLimitFilter);
+        registrationBean.addUrlPatterns("/api/v1/auth/login");
+        registrationBean.setOrder(1);
+        return registrationBean;
     }
 
 }

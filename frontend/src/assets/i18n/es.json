@@ -54,22 +54,24 @@
   "error.validation": "Error de validación:",
   "error.internal": "Ha ocurrido un error interno",
   "error.unexpected": "Error inesperado",
-  "validation.username.required": "El usuario es obligatorio",
+  "validation.username.required": "El usuario es obligatorio.",
   "validation.username.size": "El usuario debe tener entre 1 y 50 caracteres",
-  "validation.firstname.required": "El nombre es obligatorio",
+  "validation.firstname.required": "El nombre es obligatorio.",
   "validation.firstname.size": "El nombre debe tener entre 1 y 50 caracteres",
   "validation.firstname.pattern": "El nombre solo puede contener letras y caracteres válidos",
-  "validation.lastname.required": "El apellido es obligatorio",
+  "validation.lastname.required": "El apellido es obligatorio.",
   "validation.lastname.size": "El apellido debe tener entre 1 y 50 caracteres",
   "validation.lastname.pattern": "El apellido solo puede contener letras y caracteres válidos",
-  "validation.email.required": "El correo electrónico es obligatorio",
+  "validation.email.required": "El correo electrónico es obligatorio.",
   "validation.email.invalid": "El correo electrónico debe ser válido",
-  "validation.password.required": "La contraseña es obligatoria",
+  "validation.password.required": "La contraseña es obligatoria.",
   "validation.password.size": "La contraseña debe tener entre 8 y 100 caracteres",
   "validation.password.pattern": "La contraseña debe contener al menos una mayúscula, una minúscula, un número, un carácter especial y tener al menos 8 caracteres.",
-  "validation.confirmPassword.required": "Confirmar contraseña es obligatorio",
+  "validation.confirmPassword.required": "Debes confirmar la contraseña.",
+  "validation.password.mismatch": "Las contraseñas deben coincidir",
   "error.password.pattern": "La contraseña debe contener al menos una mayúscula, una minúscula, un número, un carácter especial y tener al menos 8 caracteres.",
   "error.invalid.token": "El token es inválido o ha expirado",
+  "error.too.many.requests": "Lo ha intentando varias veces seguidas, por favor pruebe luego.",
   "passwordReset": {
     "title": "¿Has olvidado tu contraseña?",
     "emailLabel": "Correo electrónico",
@@ -84,13 +86,5 @@
     "confirmPassword": "Confirmar contraseña",
     "submit": "Cambiar contraseña",
     "success": "Tu contraseña ha sido cambiada con éxito."
-  },
-  "validation": {
-    "password": {
-      "required": "La contraseña es obligatoria.",
-      "size": "La contraseña debe tener al menos {{min}} caracteres.",
-      "mismatch": "Las contraseñas no coinciden.",
-      "pattern": "La contraseña debe contener al menos una mayúscula, una minúscula, un número y un carácter especial."
-    }
   }
 }

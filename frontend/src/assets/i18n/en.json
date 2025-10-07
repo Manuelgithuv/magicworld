@@ -68,8 +68,10 @@
   "validation.password.size": "Password must be between 8 and 100 characters",
   "validation.password.pattern": "Password must contain at least one uppercase letter, one lowercase letter, one number, one special character, and be at least 8 characters long.",
   "validation.confirmPassword.required": "Confirm password is required",
+  "validation.password.mismatch": "Passwords must match",
   "error.password.pattern": "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character.",
   "error.invalid.token": "Token is invalid or has expired",
+  "error.too.many.requests": "You have tried to much times. Please try again later.",
   "passwordReset": {
     "title": "Forgot your password?",
     "emailLabel": "Email address",
@@ -84,13 +86,5 @@
     "confirmPassword": "Confirm password",
     "submit": "Change password",
     "success": "Your password has been successfully changed."
-  },
-  "validation": {
-    "password": {
-      "required": "Password is required.",
-      "size": "Password must be at least {{min}} characters.",
-      "mismatch": "Passwords do not match.",
-      "pattern": "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character."
-    }
   }
 }
