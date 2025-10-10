@@ -18,10 +18,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Set up JDK 24 (Temurin)
+      - name: Set up JDK 21 (Temurin)
         uses: actions/setup-java@v4
         with:
-          java-version: '24'
+          java-version: '21'
           distribution: 'temurin'
           cache: 'maven'
       - name: Build and run tests with JaCoCo
@@ -87,7 +87,6 @@ jobs:
           -e CODACY_PROJECT_TOKEN=$CODACY_PROJECT_TOKEN
           codacy/codacy-analysis-cli:latest
           analyze -d /src
-          --exclude-paths node_modules,frontend/dist,target
           --format sarif --output /src/codacy.sarif
       - name: Upload SARIF to GitHub Code Scanning
         if: env.CODACY_PROJECT_TOKEN != ''
