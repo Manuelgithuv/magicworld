@@ -1,4 +1,3 @@
-
 module.exports = function (config) {
   config.set({
     basePath: '',
@@ -16,10 +15,11 @@ module.exports = function (config) {
     },
     reporters: ['progress', 'kjhtml', 'coverage'],
     coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/frontend'),
+      dir: require('path').join(__dirname, 'coverage'),
+      subdir: 'frontend',
       reporters: [
         { type: 'html' },
-        { type: 'lcovonly', subdir: '.', file: 'lcov.info' },
+        { type: 'lcovonly' },
         { type: 'text-summary' }
       ],
       fixWebpackSourcePaths: true
@@ -33,4 +33,3 @@ module.exports = function (config) {
     restartOnFileChange: false
   });
 };
-
