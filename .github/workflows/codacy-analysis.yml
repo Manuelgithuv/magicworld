@@ -1,0 +1,96 @@
+name: Codacy Analysis
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  backend-codacy:
+    name: Codacy Java Backend Analysis
+    runs-on: ubuntu-latest
+    # Ejecutar Maven desde la raíz del repo (aquí está el pom.xml)
+    defaults:
+      run:
+        working-directory: ./
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up JDK 24 (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          java-version: '24'
+          distribution: 'temurin'
+          cache: 'maven'
+      - name: Build and run tests with JaCoCo
+        run: >-
+          mvn -B -DskipTests=false
+          org.jacoco:jacoco-maven-plugin:0.8.12:prepare-agent
+          test
+          org.jacoco:jacoco-maven-plugin:0.8.12:report
+      - name: Upload coverage to Codacy (Java)
+        if: ${{ secrets.CODACY_PROJECT_TOKEN != '' }}
+        run: >-
+          bash <(curl -Ls https://coverage.codacy.com/get.sh)
+          report -l Java -r target/site/jacoco/jacoco.xml
+        env:
+          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+
+  frontend-codacy:
+    name: Codacy Angular Frontend Analysis
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'frontend/package-lock.json'
+      - name: Setup Google Chrome
+        uses: browser-actions/setup-chrome@v1
+      - name: Expose CHROME_BIN env
+        run: echo "CHROME_BIN=$CHROME_PATH" >> $GITHUB_ENV
+      - name: Install dependencies
+        run: npm ci
+      - name: Run tests and generate coverage
+        run: npm run test -- --coverage --watch=false --browsers=ChromeHeadless
+        env:
+          CI: true
+      - name: Upload coverage to Codacy (Angular)
+        if: ${{ secrets.CODACY_PROJECT_TOKEN != '' }}
+        run: >-
+          bash <(curl -Ls https://coverage.codacy.com/get.sh)
+          report -l JavaScript -r coverage/frontend/lcov.info
+        env:
+          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+
+  static-analysis:
+    name: Codacy Static Analysis (Monorepo)
+    runs-on: ubuntu-latest
+    if: ${{ secrets.CODACY_PROJECT_TOKEN != '' }}
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Run Codacy Analysis CLI (Docker)
+        env:
+          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+        run: >-
+          docker run --rm -v "$PWD":/src -w /src
+          -e CODACY_PROJECT_TOKEN=$CODACY_PROJECT_TOKEN
+          codacy/codacy-analysis-cli:latest
+          analyze -d /src
+          --exclude node_modules --exclude frontend/dist --exclude target
+          --format sarif --output /src/codacy.sarif
+      - name: Upload SARIF to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: codacy.sarif
