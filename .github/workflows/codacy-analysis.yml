@@ -75,6 +75,7 @@ jobs:
     permissions:
       contents: read
       security-events: write
+      actions: read
     env:
       CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
     steps:
@@ -89,7 +90,7 @@ jobs:
           analyze -d /src
           --format sarif --output /src/codacy.sarif
       - name: Upload SARIF to GitHub Code Scanning
-        if: env.CODACY_PROJECT_TOKEN != ''
+        if: env.CODACY_PROJECT_TOKEN != '' && github.event_name == 'push'
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: codacy.sarif

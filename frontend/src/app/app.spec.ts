@@ -1,16 +1,29 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { App } from './app';
+import { provideRouter } from '@angular/router';
+import { AuthService, Role } from './auth/auth-service';
+import { Observable, of, Subject } from 'rxjs';
+
+class MockAuthService {
+  authChanged = new Subject<boolean>();
+  isAuthenticated(): Observable<boolean> { return of(false); }
+  checkRole(): Observable<Role | null> { return of(null); }
+  logout(): Observable<any> { return of({}); }
+  notifyAuthChanged(isAuth: boolean) { this.authChanged.next(isAuth); }
+}
 
 describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
         App,
-        HttpClientTestingModule,
         TranslateModule.forRoot(),
       ],
+      providers: [
+        provideRouter([]),
+        { provide: AuthService, useClass: MockAuthService },
+      ]
     }).compileComponents();
   });
 
