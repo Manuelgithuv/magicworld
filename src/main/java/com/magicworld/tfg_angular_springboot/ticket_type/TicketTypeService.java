@@ -1,5 +1,7 @@
 package com.magicworld.tfg_angular_springboot.ticket_type;
 
+import com.magicworld.tfg_angular_springboot.discount_ticket_type.DiscountTicketTypeService;
+import com.magicworld.tfg_angular_springboot.exceptions.NoDiscountsCanBeAssignedToTicketTypeException;
 import com.magicworld.tfg_angular_springboot.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,7 @@ import java.util.List;
 public class TicketTypeService {
 
     private final TicketTypeRepository ticketTypeRepository;
+    private final DiscountTicketTypeService discountTicketTypeService;
 
     @Transactional(readOnly = true)
     public List<TicketType> findAll() {
@@ -47,6 +50,9 @@ public class TicketTypeService {
     @Transactional
     public void delete(Long id) {
         TicketType ticketType = findById(id);
+        if (discountTicketTypeService.hasAssociations(id)) {
+            throw new NoDiscountsCanBeAssignedToTicketTypeException();
+        }
         ticketTypeRepository.delete(ticketType);
     }
 }

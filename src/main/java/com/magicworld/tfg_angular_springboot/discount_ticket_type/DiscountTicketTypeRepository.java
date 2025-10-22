@@ -16,4 +16,6 @@ public interface DiscountTicketTypeRepository extends JpaRepository<DiscountTick
 
     @Modifying(clearAutomatically = true)
     void deleteByDiscountId(Long discountId);
+
+    Boolean existsByTicketTypeId(Long ticketTypeId);
 }
