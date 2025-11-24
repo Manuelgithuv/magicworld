@@ -22,7 +22,7 @@ export class AttractionList implements OnInit {
   errorKey: string | null = null;
   errorArgs: any = null;
   validationMessages: string[] = [];
-  filters: { minHeight?: number | null; minWeight?: number | null; minAge?: number | null } = { minHeight: null, minWeight: null, minAge: null };
+  filters: { minHeight?: number | null; minWeight?: number | null; minAge?: number | null } = { minHeight: 0, minWeight: 0, minAge: 0 };
 
   private apiBase = 'http://localhost:8080';
 
@@ -88,7 +88,8 @@ export class AttractionList implements OnInit {
   }
 
   clearFilters() {
-    this.filters = { minHeight: null, minWeight: null, minAge: null };
+    // Restaurar a valores por defecto 0
+    this.filters = { minHeight: 0, minWeight: 0, minAge: 0 };
     this.load();
   }
 

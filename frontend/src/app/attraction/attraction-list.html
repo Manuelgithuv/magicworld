@@ -2,24 +2,24 @@
   <div class="page-header">
     <h2>{{ 'ATTRACTIONS.TITLE' | translate }}</h2>
   </div>
-
-  <!-- Barra de búsqueda / filtros -->
-  <div class="filter-bar">
-    <div class="filter-field">
-      <label>{{ 'ATTRACTIONS.FILTER.MIN_HEIGHT' | translate }}</label>
-      <input type="number" min="0" class="field__input" [(ngModel)]="filters.minHeight" />
-    </div>
-    <div class="filter-field">
-      <label>{{ 'ATTRACTIONS.FILTER.MIN_WEIGHT' | translate }}</label>
-      <input type="number" min="0" class="field__input" [(ngModel)]="filters.minWeight" />
-    </div>
-    <div class="filter-field">
-      <label>{{ 'ATTRACTIONS.FILTER.MIN_AGE' | translate }}</label>
-      <input type="number" min="0" class="field__input" [(ngModel)]="filters.minAge" />
+  <div class="attraction-filter-bar">
+    <div class="filter-row">
+      <div class="filter-field">
+        <label>{{ 'ATTRACTIONS.FILTER.MIN_HEIGHT' | translate }}</label>
+        <input type="number" min="0" class="field__input" [(ngModel)]="filters.minHeight" />
+      </div>
+      <div class="filter-field">
+        <label>{{ 'ATTRACTIONS.FILTER.MIN_WEIGHT' | translate }}</label>
+        <input type="number" min="0" class="field__input" [(ngModel)]="filters.minWeight" />
+      </div>
+      <div class="filter-field">
+        <label>{{ 'ATTRACTIONS.FILTER.MIN_AGE' | translate }}</label>
+        <input type="number" min="0" class="field__input" [(ngModel)]="filters.minAge" />
+      </div>
     </div>
     <div class="filter-actions">
-      <button class="btn btn--primary" (click)="applyFilters()">{{ 'ATTRACTIONS.FILTER.SEARCH' | translate }}</button>
-      <button class="btn btn--secondary" (click)="clearFilters()">{{ 'ATTRACTIONS.FILTER.CLEAR' | translate }}</button>
+      <button class="btn-filter" (click)="applyFilters()">{{ 'ATTRACTIONS.FILTER.SEARCH' | translate }}</button>
+      <button class="btn-filter btn-filter--outline"  (click)="clearFilters()">{{ 'ATTRACTIONS.FILTER.CLEAR' | translate }}</button>
     </div>
   </div>
 
