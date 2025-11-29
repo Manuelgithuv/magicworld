@@ -66,23 +66,18 @@ export class AuthService {
     return match ? decodeURIComponent(match[2]) : null;
   }
 
+  getCsrfTokenFromServer(): Observable<string> {
+    return this.http.get<{ token: string }>(`${this.apiUrl}/csrf-token`, { withCredentials: true })
+      .pipe(map(res => res.token));
+  }
+
   ensureCsrfToken(headers: HttpHeaders): Observable<HttpHeaders> {
     const csrfToken = this.getCookie('XSRF-TOKEN');
-
     if (csrfToken) {
-      const updatedHeaders = headers.set('X-XSRF-TOKEN', csrfToken);
-      return of(updatedHeaders);
+      return of(headers.set('X-XSRF-TOKEN', csrfToken));
     }
-    return this.http.get(`${this.apiUrl}/csrf-token`, {
-      withCredentials: true
-    }).pipe(
-      map(() => {
-        const newToken = this.getCookie('XSRF-TOKEN');
-        if (newToken) {
-          return headers.set('X-XSRF-TOKEN', newToken);
-        }
-        return headers;
-      })
+    return this.getCsrfTokenFromServer().pipe(
+      map(token => token ? headers.set('X-XSRF-TOKEN', token) : headers)
     );
   }
 
@@ -101,13 +96,6 @@ export class AuthService {
       })
     );
   }
-
-  checkRole(): Observable<Role | null> {
-    return this.http.get<UserDTO>(`${this.apiUrl}/me`, { withCredentials: true }).pipe(
-      map(user => user.role)
-    );
-  }
-
 
   checkRoleSecure(): Observable<Role | null> {
     const headers = new HttpHeaders();

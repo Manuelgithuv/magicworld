@@ -145,7 +145,6 @@ export class AttractionForm implements OnInit {
       return;
     }
 
-    // Igual que ticket types: en creación el archivo es obligatorio; en edición es opcional
     if (!this.isEdit && !this.selectedFile) {
       this.photoRequiredError = true;
       return;
